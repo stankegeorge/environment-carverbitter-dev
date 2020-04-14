@@ -1,0 +1,11 @@
+adminUser:
+  password: vault:carverbitter/adminUser:password
+  username: admin
+enableDocker: false
+pipelineUser:
+  email: arcalos-admin@googlegroups.com
+  token: vault:carverbitter/pipelineUser:token
+  username: cloudbees-ci-cd[bot]
+prow:
+  hmacToken: vault:carverbitter/prow:hmacToken
+segmentWriteKey: vault:carverbitter:segmentWriteKey

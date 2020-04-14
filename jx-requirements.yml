@@ -1,40 +1,105 @@
 autoUpdate:
   enabled: true
-  schedule: '0 0 * * *'
+  schedule: 0 0 * * *
+bootConfigURL: https://github.com/cloudbees/arcalos-boot-config.git
 cluster:
-  clusterName: ""
-  environmentGitOwner: ""
-  project: ""
+  azure: {}
+  chartRepository: http://bucketrepo/bucketrepo/charts/
+  clusterName: carverbitter
+  environmentGitOwner: stankegeorge
+  environmentGitPublic: true
+  externalDNSSAName: carverbitter-dn
+  gitKind: github
+  gitName: github
+  gitPublic: true
+  gitServer: https://github.com
+  gke:
+    projectNumber: "742087168027"
+  kanikoSAName: carverbitter-ko
+  namespace: jx
+  project: cbjx-carverbitter
   provider: gke
-  zone: ""
-gitops: true
-githubApp:
-  enabled: false
-  url: ""
-  schedule: '0 0 * * *'
+  registry: gcr.io
+  vaultName: carverbitter
+  vaultSAName: carverbitter-vt
+  zone: us-central1-c
 environments:
-- key: dev
-- key: staging
-- key: production
+- ingress:
+    cloud_dns_secret_name: external-dns-gcp-sa
+    domain: cbjx-carverbitter.jxaas.live
+    domainIssuerURL: https://jx-tenant-service-jx.mgmt.jxaas.live
+    externalDNS: true
+    namespaceSubDomain: -jx.
+    tls:
+      email: jenkins-x@cloudbees.com
+      enabled: true
+      production: true
+  key: dev
+  repository: environment-carverbitter-dev
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: staging
+  repository: environment-carverbitter-staging
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: production
+  repository: environment-carverbitter-production
+githubApp:
+  enabled: true
+  schedule: 0 0 * * *
+  url: https://lighthouse-githubapp-jx.mgmt.jxaas.live
+gitops: true
 ingress:
-  domain: ""
+  cloud_dns_secret_name: external-dns-gcp-sa
+  domain: cbjx-carverbitter.jxaas.live
+  domainIssuerURL: https://jx-tenant-service-jx.mgmt.jxaas.live
   externalDNS: true
+  namespaceSubDomain: -jx.
   tls:
     email: jenkins-x@cloudbees.com
     enabled: true
-    production: false
+    production: true
 kaniko: true
+repository: bucketrepo
 secretStorage: vault
 storage:
+  backup:
+    enabled: true
+    url: gs://cbjx-carverbitter-backup
   logs:
-    enabled: false
-    url: ""
+    enabled: true
+    url: gs://cbjx-carverbitter-lts
   reports:
     enabled: false
     url: ""
   repository:
-    enabled: false
-    url: ""
+    enabled: true
+    url: gs://cbjx-carverbitter-repository
+vault:
+  aws: {}
+  bucket: cbjx-carverbitter-vault
+  key: carverbitter-crypto-key
+  keyring: carverbitter-keyring
+  name: carverbitter
+  serviceAccount: carverbitter-vt
 velero:
   namespace: velero
-webhook: prow
+  schedule: ""
+  serviceAccount: carverbitter-vo
+  ttl: ""
+versionStream:
+  ref: v0.0.358
+  url: https://github.com/cloudbees/arcalos-jenkins-x-versions.git
+webhook: lighthouse
